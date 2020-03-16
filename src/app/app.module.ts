@@ -1,16 +1,24 @@
-import { BrowserModule } from '@angular/platform-browser';
-import { NgModule } from '@angular/core';
+import { BrowserModule } from "@angular/platform-browser";
+import { NgModule, Injector } from "@angular/core";
 
-import { AppComponent } from './app.component';
+import { AppComponent } from "./app.component";
+import { BrDateComponent } from "./components/br-date/br-date.component";
 
+import { createCustomElement } from "@angular/elements";
 @NgModule({
-  declarations: [
-    AppComponent
-  ],
-  imports: [
-    BrowserModule
-  ],
+  declarations: [AppComponent, BrDateComponent],
+  imports: [BrowserModule],
   providers: [],
-  bootstrap: [AppComponent]
+  entryComponents: [BrDateComponent]
 })
-export class AppModule { }
+export class AppModule {
+  constructor(private injector: Injector) {}
+
+  ngDoBootstrap() {
+    const element = createCustomElement(BrDateComponent, {
+      injector: this.injector
+    });
+
+    customElements.define('br-date', element);
+  }
+}
